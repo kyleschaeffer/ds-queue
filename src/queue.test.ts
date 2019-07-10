@@ -1,37 +1,26 @@
 import { Queue } from './queue';
 
 test('new queue is instantiated', () => {
-  const q = new Queue<number>();
-  expect(q.items).toEqual([]);
+  const q = new Queue<number>(1, 2, 3);
+  expect(q.items).toEqual([1, 2, 3]);
 });
 
-test('item added to queue', () => {
-  const q = new Queue<string>();
-  q.add('one');
-  q.add('two');
-  expect(q.items).toEqual(['one', 'two']);
+test('items are enqueued', () => {
+  const q = new Queue<string>('one', 'two');
+  q.enqueue('three');
+  expect(q.items).toEqual(['one', 'two', 'three']);
+  expect(q.size).toBe(3);
 });
 
 test('item is dequeued', () => {
-  const q = new Queue<string>();
-  q.add('one');
-  q.add('two');
-  q.add('three');
+  const q = new Queue<string>('one', 'two', 'three');
   const dequeued = q.dequeue();
   expect(dequeued).toBe('one');
   expect(q.items).toEqual(['two', 'three']);
-});
-
-test('queue has length', () => {
-  const q = new Queue<string>();
-  q.add('one');
-  q.add('two');
-  expect(q.length).toBe(2);
+  expect(q.size).toBe(2);
 });
 
 test('error on removing from empty queue', () => {
   const q = new Queue<string>();
-  q.add('one');
-  q.dequeue();
   expect(() => q.dequeue()).toThrowError();
 });
