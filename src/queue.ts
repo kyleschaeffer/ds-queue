@@ -14,12 +14,18 @@ export class Queue<T> {
   private length: number;
 
   /**
+   * Queue head (starting) index
+   */
+  private head: number;
+
+  /**
    * Instantiate a new queue
    */
   constructor(...items: T[]) {
     // New empty queue
     this.queue = {};
     this.length = 0;
+    this.head = 0;
 
     // Queue items
     this.enqueue(...items);
@@ -44,7 +50,7 @@ export class Queue<T> {
    */
   public enqueue(...items: T[]): void {
     items.forEach(item => {
-      this.queue[this.length] = item;
+      this.queue[this.head + this.length] = item;
       this.length++;
     });
   }
@@ -57,14 +63,12 @@ export class Queue<T> {
     if (!this.length) throw new Error('Queue is empty');
 
     // Dequeue next
-    const dequeued = this.queue[0];
+    const dequeued = this.queue[this.head];
 
     // Shift queued items
-    for (let i = 1; i < this.length; i++) {
-      this.queue[i - 1] = this.queue[i];
-    }
-    delete this.queue[this.length - 1];
+    delete this.queue[this.head];
     this.length--;
+    this.head++;
 
     // Dequeue next item
     return dequeued;

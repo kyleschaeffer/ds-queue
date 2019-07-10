@@ -20,6 +20,14 @@ test('item is dequeued', () => {
   expect(q.size).toBe(2);
 });
 
+test('queue head is updated', () => {
+  const q = new Queue<string>('one', 'two', 'three');
+  q.dequeue();
+  q.enqueue('four', 'five');
+  expect(q.items).toEqual(['two', 'three', 'four', 'five']);
+  expect(q.size).toBe(4);
+});
+
 test('error on removing from empty queue', () => {
   const q = new Queue<string>();
   expect(() => q.dequeue()).toThrowError();
